@@ -831,7 +831,7 @@
   resolved "https://registry.yarnpkg.com/@rails/actioncable/-/actioncable-6.1.2.tgz#c2eb025afd3f97d2328aef5c647c1b44dcecb83c"
   integrity sha512-KGl8Vd5MWAIE6X/QVr36y5LLkqNRgt8frflIUkuMm/zB/+vnL6vO8jXQgSzpmPHZ7+j7fJv4JmfL1jofKUDFdw==
 
-"@rails/activestorage@^6.0.0":
+"@rails/activestorage@^6.1.1":
   version "6.1.2"
   resolved "https://registry.yarnpkg.com/@rails/activestorage/-/activestorage-6.1.2.tgz#e56c01314a85cacb53e5911ddc957578ac720c9c"
   integrity sha512-7rwFGtUBDrwDAjXs2jl7MG20Z5Pd9+42RpH1N3xDF4PaqC9wfBzvPfT31hd5JTgXJH+/DtYepgrZK2e5Zps4Bg==
