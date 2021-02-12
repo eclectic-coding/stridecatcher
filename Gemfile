@@ -9,6 +9,7 @@ gem "puma", "~> 5.0"
 gem "rails", "~> 6.1.2"
 gem "rexml"
 gem "sass-rails", ">= 6"
+gem "strong_migrations"
 gem "turbolinks", "~> 5"
 gem "webpacker", "~> 5.0"
 
@@ -17,6 +18,7 @@ group :development, :test do
 end
 
 group :development do
+  gem "bullet"
   gem "listen", "~> 3.3"
   gem "rack-mini-profiler", "~> 2.0"
   gem "spring"
