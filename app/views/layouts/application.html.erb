@@ -13,9 +13,11 @@
 </head>
 
 <body>
+  <%= render partial: "shared/navbar" %>
 <div class="container" role="main">
   <p class="notice"><%= notice %></p>
   <p class="alert"><%= alert %></p>
+
 
   <%= link_to "Create an Account", new_user_registration_path unless current_user %>
   <%= link_to "Sign In", new_user_session_path unless current_user %>
