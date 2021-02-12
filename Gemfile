@@ -4,6 +4,7 @@ ruby "3.0.0"
 
 gem "bootsnap", ">= 1.4.4", require: false
 gem "devise"
+gem "devise-bootstrapped", github: "king601/devise-bootstrapped", branch: "bootstrap4"
 gem "honeybadger"
 gem "jbuilder", "~> 2.7"
 gem "pg", "~> 1.1"
