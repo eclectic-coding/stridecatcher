@@ -41,4 +41,40 @@ class ActivityTest < ActiveSupport::TestCase
 
     assert_not @activity.valid?
   end
+
+  test "should calculate calculated_pace" do
+    @activity.distance = 10
+    @activity.unit = :miles
+    @activity.duration = 3600
+    @activity.save
+
+    assert_equal 360, @activity.reload.calculated_pace
+
+    @activity.distance = 10
+    @activity.unit = :kilometers
+    @activity.duration = 1800
+    @activity.save
+    converted_distance = @activity.distance * 0.6213712
+    pace = @activity.duration / converted_distance
+
+    assert_equal pace, @activity.reload.calculated_pace
+
+    @activity.distance = 800
+    @activity.unit = :meters
+    @activity.duration = 120
+    @activity.save
+    converted_distance = @activity.distance * 0.0006213711985
+    pace = @activity.duration / converted_distance
+
+    assert_equal pace, @activity.reload.calculated_pace
+
+    @activity.distance = 600
+    @activity.unit = :yards
+    @activity.duration = 90
+    @activity.save
+    converted_distance = @activity.distance * 0.0005681818239083977
+    pace = @activity.duration / converted_distance
+
+    assert_equal pace, @activity.reload.calculated_pace
+  end
 end

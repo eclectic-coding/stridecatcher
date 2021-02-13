@@ -6,6 +6,8 @@ class Activity < ApplicationRecord
   enum difficulty: { easy: 0, moderate: 1, hard: 2 }
   enum unit: { miles: 0, kilometers: 1, meters: 2, yards: 3 }
 
+  before_save :calculate_pace
+
   validates :date, presence: true
   validates :duration, numericality: { only_integer: true, greater_than_or_equal_to: 1, allow_nil: true }
   validates :distance, numericality: { only_integer: true, greater_than_or_equal_to: 1, allow_nil: true }
@@ -19,6 +21,27 @@ class Activity < ApplicationRecord
   end
 
   def require_unit_if_distance_set
-    errors.add(:base, "Please select a unit") if self.distance.present? && self.unit.nil?
+    errors.add(:base, "Please select a unit") if distance.present? && unit.nil?
+  end
+
+  def calculate_pace
+    if unit.present? && distance.present? && duration.present?
+      case unit
+      when "miles"
+        self.calculated_pace = duration / distance
+      when "kilometers"
+        # 0.6213712
+        converted_distance = self.distance * 0.6213712
+        self.calculated_pace = self.duration / converted_distance
+      when "meters"
+        # 0.0006213711985
+        converted_distance = self.distance * 0.0006213711985
+        self.calculated_pace = self.duration / converted_distance
+      when "yards"
+        # 0.0005681818239083977
+        converted_distance = self.distance * 0.0005681818239083977
+        self.calculated_pace = self.duration / converted_distance
+      end
+    end
   end
 end
