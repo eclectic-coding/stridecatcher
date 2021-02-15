@@ -18,6 +18,15 @@ class ActivitiesController < ApplicationController
     end
   end
 
+  def edit; end
+
+  def update
+    if @activity.update(activity_params)
+      redirect_to @activity, notice: "Updated Activity"
+    else
+      render "edit"
+    end
+  end
 
   private
 
@@ -38,6 +47,6 @@ class ActivitiesController < ApplicationController
   def activity_params
     params
       .require(:activity)
-      .permit(:duration, :category, :distance, :difficulty, :unit, :date)
+      .permit(:duration, :category, :distance, :difficulty, :unit, :date, :description)
   end
 end

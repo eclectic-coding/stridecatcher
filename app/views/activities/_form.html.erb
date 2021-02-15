@@ -4,14 +4,17 @@
     <%= f.label :date %>
     <%= f.datetime_field :date, class: "form-control" %>
   </div>
+
   <div class="form-group">
     <%= f.label :category %>
     <%= f.collection_select :category, Activity.categories.keys.map{ |activity| [activity, activity.humanize] }, :first, :second, {}, class: "custom-select" %>
   </div>
+
   <div class="form-group">
     <%= f.label :difficulty %>
     <%= f.collection_select :difficulty, Activity.difficulties.keys.map{ |activity| [activity, activity.humanize] }, :first, :second, {}, class: "custom-select" %>
   </div>
+
   <div class="form-group">
     <%= f.label :distance %>
     <%= f.number_field :distance, class: "form-control" %>
@@ -20,6 +23,7 @@
     <%= f.label :unit %>
     <%= f.collection_select :unit, Activity.units.keys.map{ |activity| [activity, activity.humanize] }, :first, :second, { prompt: true }, class: "custom-select" %>
   </div>
+
   <div class="form-group">
     <%= f.label :hours %>
     <%= f.number_field :hours, min: 0, max: 99, step: 1, class: "form-control" %>
@@ -28,7 +32,12 @@
     <%= f.label :seconds %>
     <%= f.number_field :seconds, min: 0, max: 59, step: 1, class: "form-control" %>
   </div>
+
   <div class="form-group">
-    <%= f.submit %>
+    <%= f.rich_text_area :description, class: "form-control" %>
+  </div>
+
+  <div class="form-group">
+    <%= f.submit class: "btn btn-primary" %>
   </div>
 <% end %>
