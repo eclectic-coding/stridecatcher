@@ -39,6 +39,12 @@ class ActivitiesController < ApplicationController
 
   private
 
+  def activity_params
+    params
+      .require(:activity)
+      .permit(:duration, :category, :distance, :difficulty, :unit, :date, :description)
+  end
+
   def set_activity
     @activity = Activity.find(params[:id])
   end
@@ -51,11 +57,5 @@ class ActivitiesController < ApplicationController
     calculated_duration += params[:activity][:seconds].to_i if params[:activity][:seconds].present?
 
     params[:activity][:duration] = calculated_duration unless calculated_duration.zero?
-  end
-
-  def activity_params
-    params
-      .require(:activity)
-      .permit(:duration, :category, :distance, :difficulty, :unit, :date, :description)
   end
 end

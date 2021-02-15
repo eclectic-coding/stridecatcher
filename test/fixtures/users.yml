@@ -4,9 +4,6 @@
 # model remove the '{}' from the fixture names and add the columns immediately
 # below each fixture, per the syntax in the comments below
 #
-
-# https://stackoverflow.com/questions/26644712/how-to-create-fixtures-for-a-devise-user-as-a-yml-erb-in-rails-4-1-5/62475071#62475071
-
 confirmed_user:
   email: user_one@example.com
   confirmed_at: <%= Time.zone.now %>
@@ -20,5 +17,10 @@ confirmed_user_with_time_zone:
 
 confirmed_user_with_activities:
   email: confirmed_user_with_activities@example.com
+  confirmed_at: <%= Time.zone.now %>
+  encrypted_password: <%= Devise::Encryptor.digest(User, 'password') %>
+
+another_confirmed_user_with_activities:
+  email: another_confirmed_user_with_activities@example.com
   confirmed_at: <%= Time.zone.now %>
   encrypted_password: <%= Devise::Encryptor.digest(User, 'password') %>
