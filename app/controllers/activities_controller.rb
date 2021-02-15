@@ -1,7 +1,11 @@
 class ActivitiesController < ApplicationController
   before_action :authenticate_user!
-  before_action :set_activity, only: %i[show]
+  before_action :set_activity, only: %i[show edit update destroy]
   before_action :calculate_duration, only: [:create]
+
+  def index
+    @activities = current_user.activities
+  end
 
   def show; end
 
@@ -26,6 +30,11 @@ class ActivitiesController < ApplicationController
     else
       render "edit"
     end
+  end
+
+  def destroy
+    @activity.destroy
+    redirect_to activities_path, notice: "Activity Deleted"
   end
 
   private
