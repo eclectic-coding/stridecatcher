@@ -10,7 +10,7 @@ class Activity < ApplicationRecord
 
   validates :date, presence: true
   validates :duration, numericality: { only_integer: true, greater_than_or_equal_to: 1, allow_nil: true }
-  validates :distance, numericality: { only_integer: true, greater_than_or_equal_to: 1, allow_nil: true }
+  validates :distance, numericality: { greater_than_or_equal_to: 0, allow_nil: true }
   validate :require_distance_or_duration
   validate :require_unit_if_distance_set
 
