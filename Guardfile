@@ -33,7 +33,7 @@ guard :minitest do
   # Run everything in or below 'test/controllers' everytime
   # ApplicationController changes
   watch(%r{^app/controllers/application_controller\.rb$}) do
-    'test/controllers'
+    "test/controllers"
   end
 
   # Run integration test every time a corresponding controller changes
