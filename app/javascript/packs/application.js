@@ -23,3 +23,6 @@ document.addEventListener("turbolinks:load", ()=>{
 
 require("trix")
 require("@rails/actiontext")
+document.addEventListener("trix-file-accept", (e) => {
+    e.preventDefault()
+})
