@@ -1,4 +1,13 @@
 GIT
+  remote: https://github.com/activerecord-hackery/ransack.git
+  revision: ffc4e6c17c99138cc65305a8b71ce0901bfa62ee
+  specs:
+    ransack (2.4.2)
+      activerecord (>= 5.2.4)
+      activesupport (>= 5.2.4)
+      i18n
+
+GIT
   remote: https://github.com/king601/devise-bootstrapped.git
   revision: 59e23f0673c9a273be765ca26091c5792cd25fa7
   branch: bootstrap4
@@ -150,6 +159,7 @@ GEM
       nenv (~> 0.1)
       shellany (~> 0.0)
     orm_adapter (0.5.0)
+    pagy (3.11.0)
     parallel (1.20.1)
     parser (3.0.0.0)
       ast (~> 2.4.1)
@@ -160,6 +170,8 @@ GEM
     public_suffix (4.0.6)
     puma (5.2.1)
       nio4r (~> 2.0)
+    pundit (2.1.0)
+      activesupport (>= 3.0.0)
     racc (1.5.2)
     rack (2.2.3)
     rack-mini-profiler (2.3.1)
@@ -300,10 +312,13 @@ DEPENDENCIES
   listen (~> 3.3)
   minitest
   minitest-reporters
+  pagy
   pg (~> 1.1)
   puma (~> 5.0)
+  pundit
   rack-mini-profiler (~> 2.0)
   rails (~> 6.1.2)
+  ransack!
   rexml
   rubocop
   rubocop-minitest

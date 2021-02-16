@@ -17,28 +17,34 @@
 
 guard :minitest do
   # with Minitest::Unit
-  watch(%r{^test/(.*)\/?test_(.*)\.rb$})
-  watch(%r{^lib/(.*/)?([^/]+)\.rb$})     { |m| "test/#{m[1]}test_#{m[2]}.rb" }
-  watch(%r{^test/test_helper\.rb$})      { "test" }
+  # Run everything within 'test' if the test helper changes
+  watch(%r{^test/test_helper\.rb$}) { "test" }
 
-  # with Minitest::Spec
-  # watch(%r{^spec/(.*)_spec\.rb$})
-  # watch(%r{^lib/(.+)\.rb$})         { |m| "spec/#{m[1]}_spec.rb" }
-  # watch(%r{^spec/spec_helper\.rb$}) { 'spec' }
+  # Run everything within 'test/system' if ApplicationSystemTestCase changes
+  watch(%r{^test/application_system_test_case\.rb$}) { "test/system" }
 
-  # Rails 4
-  # watch(%r{^app/(.+)\.rb$})                               { |m| "test/#{m[1]}_test.rb" }
-  # watch(%r{^app/controllers/application_controller\.rb$}) { 'test/controllers' }
-  # watch(%r{^app/controllers/(.+)_controller\.rb$})        { |m| "test/integration/#{m[1]}_test.rb" }
-  # watch(%r{^app/views/(.+)_mailer/.+})                    { |m| "test/mailers/#{m[1]}_mailer_test.rb" }
-  # watch(%r{^lib/(.+)\.rb$})                               { |m| "test/lib/#{m[1]}_test.rb" }
-  # watch(%r{^test/.+_test\.rb$})
-  # watch(%r{^test/test_helper\.rb$}) { 'test' }
+  # Run the corresponding test anytime something within 'app' changes
+  # e.g. 'app/models/example.rb' => 'test/models/example_test.rb'
+  watch(%r{^app/(.+)\.rb$}) { |m| "test/#{m[1]}_test.rb" }
 
-  # Rails < 4
-  # watch(%r{^app/controllers/(.*)\.rb$}) { |m| "test/functional/#{m[1]}_test.rb" }
-  # watch(%r{^app/helpers/(.*)\.rb$})     { |m| "test/helpers/#{m[1]}_test.rb" }
-  # watch(%r{^app/models/(.*)\.rb$})      { |m| "test/unit/#{m[1]}_test.rb" }
+  # Run a test any time it changes
+  watch(%r{^test/.+_test\.rb$})
+
+  # Run everything in or below 'test/controllers' everytime
+  # ApplicationController changes
+  watch(%r{^app/controllers/application_controller\.rb$}) do
+    "test/controllers"
+  end
+
+  # Run integration test every time a corresponding controller changes
+  watch(%r{^app/controllers/(.+)_controller\.rb$}) do |m|
+    "test/integration/#{m[1]}_test.rb"
+  end
+
+  # Run mailer tests when mailer views change
+  # watch(%r{^app/views/(.+)_mailer/.+}) do |m|
+  #   "test/mailers/#{m[1]}_mailer_test.rb"
+  # end
 end
 
 notification :off

@@ -28,7 +28,7 @@ class ActivityTest < ActiveSupport::TestCase
     assert_not @activity.valid?
   end
 
-  test "should have distance or duration" do
+  test "should have distance or hours, minutes or seconds" do
     @activity.distance = nil
     @activity.duration = nil
 
@@ -76,5 +76,35 @@ class ActivityTest < ActiveSupport::TestCase
     pace = @activity.duration / converted_distance
 
     assert_equal pace, @activity.reload.calculated_pace
+  end
+
+  test "should calculate duration" do
+    @activity.hours = 1
+    @activity.minutes = 30
+    @activity.seconds = 15
+    @activity.save
+
+    assert_equal 5415, @activity.reload.duration
+  end
+
+  test "hours should be positive" do
+    @activity.hours = -1
+    assert_not @activity.valid?
+  end
+
+  test "minutes should be between 0 and 59" do
+    @activity.minutes = -1
+    assert_not @activity.valid?
+
+    @activity.minutes = 60
+    assert_not @activity.valid?
+  end
+
+  test "seconds should be between 0 and 59" do
+    @activity.seconds = -1
+    assert_not @activity.valid?
+
+    @activity.seconds = 60
+    assert_not @activity.valid?
   end
 end

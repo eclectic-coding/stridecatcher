@@ -2,7 +2,11 @@ ENV["RAILS_ENV"] ||= "test"
 require_relative "../config/environment"
 require "rails/test_help"
 require "minitest/reporters"
-MiniTest::Reporters.use!
+Minitest::Reporters.use!(
+  Minitest::Reporters::ProgressReporter.new(color: true),
+  ENV,
+  Minitest.backtrace_filter
+)
 
 class ActiveSupport::TestCase
   # Run tests in parallel with specified workers
@@ -12,4 +16,6 @@ class ActiveSupport::TestCase
   fixtures :all
 
   # Add more helper methods to be used by all tests here...
+  include Devise::Test::IntegrationHelpers
+
 end
