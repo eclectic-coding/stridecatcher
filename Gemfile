@@ -12,6 +12,7 @@ gem "pg", "~> 1.1"
 gem "puma", "~> 5.0"
 gem "pundit"
 gem "rails", "~> 6.1.2"
+gem 'ransack', github: 'activerecord-hackery/ransack'
 gem "rexml"
 gem "sass-rails", ">= 6"
 gem "sendgrid-ruby"
