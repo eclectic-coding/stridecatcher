@@ -6,6 +6,7 @@ class Activity < ApplicationRecord
   enum difficulty: { easy: 0, moderate: 1, hard: 2 }
   enum unit: { miles: 0, kilometers: 1, meters: 2, yards: 3 }
 
+  has_one :action_text_rich_text, class_name: "ActionText::RichText", as: :record
   has_rich_text :description
 
   before_validation :calculate_duration
