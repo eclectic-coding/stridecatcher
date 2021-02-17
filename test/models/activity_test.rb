@@ -125,6 +125,18 @@ class ActivityTest < ActiveSupport::TestCase
 
     assert_equal 25_200, total.duration
     assert_equal 70, total.distance
+  end
 
+  test "should create total record when activity is destroyed" do
+    @user = users(:confirmed_user)
+    @activity_one = @user.activities.create(date: Time.zone.now, hours: 1, minutes: 0, seconds: 0,
+                                            unit: "miles", distance: 10)
+    @activity_two = @user.activities.create(date: Time.zone.now, hours: 1, minutes: 0, seconds: 0,
+                                            unit: "miles", distance: 10)
+    @total = @user.totals.last
+
+    @activity_one.destroy
+    assert_equal 10, @total.reload.distance
+    assert_equal 3600, @total.reload.duration
   end
 end
