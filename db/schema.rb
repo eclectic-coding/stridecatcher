@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_02_17_144510) do
+ActiveRecord::Schema.define(version: 2021_02_17_172308) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -68,7 +68,18 @@ ActiveRecord::Schema.define(version: 2021_02_17_144510) do
     t.integer "minutes"
     t.integer "seconds"
     t.decimal "distance_in_miles", precision: 5, scale: 2
+    t.bigint "shoe_id"
+    t.index ["shoe_id"], name: "index_activities_on_shoe_id"
     t.index ["user_id"], name: "index_activities_on_user_id"
+  end
+
+  create_table "shoes", force: :cascade do |t|
+    t.string "name", null: false
+    t.decimal "distance_in_miles", precision: 6, scale: 2, default: "0.0"
+    t.boolean "retired", default: false, null: false
+    t.integer "allowed_distance_in_miles"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
   end
 
   create_table "totals", force: :cascade do |t|
