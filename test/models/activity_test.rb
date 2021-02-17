@@ -106,10 +106,7 @@ class ActivityTest < ActiveSupport::TestCase
   end
 
   test "should create total record when saved" do
-    user = users(:confirmed_user)
-    week = Time.zone.now.to_date.cweek
-    year = Time.zone.now.to_date.cwyear
-    starting_on = Date.commercial(year, week)
+    starting_on = Time.zone.now.beginning_of_week
 
     assert_difference("Total.count", 1) do
       7.times do |i|
@@ -118,10 +115,10 @@ class ActivityTest < ActiveSupport::TestCase
       end
     end
 
-    total = user.totals.last
+    @total = @user.totals.last
 
-    assert_equal 25_200, total.duration
-    assert_equal 70, total.distance
+    assert_equal 25_200, @total.duration
+    assert_equal 70, @total.distance
   end
 
   test "should create total record when activity is destroyed" do

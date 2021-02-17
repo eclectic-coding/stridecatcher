@@ -66,9 +66,7 @@ class Activity < ApplicationRecord
   end
 
   def create_or_update_total
-    week = date.to_date.cweek
-    year = date.to_date.cwyear
-    starting_on = Date.commercial(year, week)
+    starting_on = self.date.beginning_of_week
 
     @total = Total.find_or_initialize_by(user: user, starting_on: starting_on, range: "week")
     @activities = Activity.where("date >= ?", starting_on).where("date <= ?",
