@@ -1,4 +1,5 @@
 Rails.application.routes.draw do
+  get 'totals/index'
   # For details on the DSL available within this file, see https://guides.rubyonrails.org/routing.html
   authenticated :user do
     root "activities#index", as: :authenticated_root
@@ -10,5 +11,6 @@ Rails.application.routes.draw do
   }
 
   resources :activities
+  resources :totals, only: [:index]
 
 end
