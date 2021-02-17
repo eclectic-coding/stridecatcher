@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_02_17_124737) do
+ActiveRecord::Schema.define(version: 2021_02_17_134713) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -78,6 +78,8 @@ ActiveRecord::Schema.define(version: 2021_02_17_124737) do
     t.integer "range", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.index ["range"], name: "index_totals_on_range"
+    t.index ["starting_on"], name: "index_totals_on_starting_on"
     t.index ["user_id"], name: "index_totals_on_user_id"
   end
 
