@@ -10,6 +10,7 @@ class Activity < ApplicationRecord
   has_rich_text :description
 
   before_validation :calculate_duration
+  before_save :calculate_distance_in_miles
   before_save :calculate_pace
   after_save :create_or_update_total
   after_destroy :subtract_from_total
@@ -35,25 +36,23 @@ class Activity < ApplicationRecord
     errors.add(:base, "Please select a unit") if distance.present? && unit.nil?
   end
 
-  def calculate_pace
-    if unit.present? && distance.present? && duration.present?
+  def calculate_distance_in_miles
+    if unit.present? && distance.present?
       case unit
       when "miles"
-        self.calculated_pace = duration / distance
+        self.distance_in_miles = distance
       when "kilometers"
-        # 0.6213712
-        converted_distance = distance * 0.6213712
-        self.calculated_pace = duration / converted_distance
+        self.distance_in_miles = distance * 0.6213712
       when "meters"
-        # 0.0006213711985
-        converted_distance = distance * 0.0006213711985
-        self.calculated_pace = duration / converted_distance
+        self.distance_in_miles = distance * 0.0006213711985
       when "yards"
-        # 0.0005681818239083977
-        converted_distance = distance * 0.0005681818239083977
-        self.calculated_pace = duration / converted_distance
+        self.distance_in_miles = distance * 0.0005681818239083977
       end
     end
+  end
+
+  def calculate_pace
+    self.calculated_pace = duration / distance_in_miles if distance_in_miles.present?
   end
 
   def calculate_duration
@@ -71,23 +70,12 @@ class Activity < ApplicationRecord
     year = date.to_date.cwyear
     starting_on = Date.commercial(year, week)
 
-    original_duration = duration
-
-    case unit
-    when "miles"
-      converted_distance = distance
-    when "kilometers"
-      converted_distance = distance * 0.6213712
-    when "meters"
-      converted_distance = distance * 0.0006213711985
-    when "yards"
-      converted_distance = distance * 0.0005681818239083977
-    end
-
     @total = Total.find_or_initialize_by(user: user, starting_on: starting_on, range: "week")
+    @activities = Activity.where("date >= ?", starting_on).where("date <= ?",
+                                                                 starting_on.end_of_week).where(user: user)
 
-    total_distance = converted_distance + @total.distance unless converted_distance.nil?
-    total_duration = original_duration + @total.duration unless original_duration.nil?
+    total_distance = @activities.sum(:distance_in_miles) unless @activities.empty?
+    total_duration = @activities.sum(:duration) unless @activities.empty?
 
     @total.distance = total_distance unless total_distance.nil?
     @total.duration = total_duration unless total_duration.nil?
@@ -114,8 +102,8 @@ class Activity < ApplicationRecord
     total = Total.find_or_initialize_by(user: user, starting_on: starting_on, range: "week")
 
     unless @total.nil?
-      total.distance =  total.distance - converted_distance
-      total.duration =  total.duration - original_duration
+      total.distance = total.distance - converted_distance
+      total.duration = total.duration - original_duration
       total.save
     end
   end
