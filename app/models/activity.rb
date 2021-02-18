@@ -1,7 +1,7 @@
 class Activity < ApplicationRecord
   self.ignored_columns = ["pace"]
   belongs_to :user
-  has_one :shoe
+  belongs_to :shoe, optional: true
 
   enum category: { run: 0, long_run: 1, workout: 2, race: 3, other: 4 }
   enum difficulty: { easy: 0, moderate: 1, hard: 2 }
@@ -14,6 +14,7 @@ class Activity < ApplicationRecord
   before_save :calculate_distance_in_miles
   before_save :calculate_pace
   after_save :create_or_update_total
+  after_save :update_shoe_distance_in_miles
   after_destroy :create_or_update_total
 
   validates :date, presence: true
@@ -53,7 +54,7 @@ class Activity < ApplicationRecord
   end
 
   def calculate_pace
-    self.calculated_pace = duration / distance_in_miles if distance_in_miles.present?
+    self.calculated_pace = duration / distance_in_miles if distance_in_miles.present? && duration
   end
 
   def calculate_duration
@@ -66,8 +67,16 @@ class Activity < ApplicationRecord
     self.duration = calculated_duration unless calculated_duration.zero?
   end
 
+  def update_shoe_distance_in_miles
+    unless shoe.nil?
+      @activities = Activity.where(shoe: shoe)
+      total_distance = @activities.sum(:distance_in_miles) unless @activities.empty?
+      shoe.update(distance_in_miles: total_distance)
+    end
+  end
+
   def create_or_update_total
-    starting_on = self.date.beginning_of_week
+    starting_on = date.beginning_of_week
 
     @total = Total.find_or_initialize_by(user: user, starting_on: starting_on, range: "week")
     @activities = Activity.where("date >= ?", starting_on).where("date <= ?",
