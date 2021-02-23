@@ -1,4 +1,6 @@
 Rails.application.routes.draw do
+  get 'shoes/index'
+  get 'shoes/new'
   get 'totals/index'
   # For details on the DSL available within this file, see https://guides.rubyonrails.org/routing.html
   authenticated :user do
@@ -12,5 +14,6 @@ Rails.application.routes.draw do
 
   resources :activities
   resources :totals, only: [:index]
+  resources :shoes
 
 end
