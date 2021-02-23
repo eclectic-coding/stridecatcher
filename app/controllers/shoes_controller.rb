@@ -1,21 +1,29 @@
 class ShoesController < ApplicationController
   before_action :authenticate_user!
-  before_action :set_shoe, only: %i[show destroy]
+  before_action :set_shoe, only: %i[edit update destroy]
 
   def index; end
-
-  def show; end
 
   def new
     @shoe = current_user.shoes.build
   end
 
   def create
-    @shoe = current_user.shoes.create(shoes_params)
+    @shoe = current_user.shoes.create(shoe_params)
     if @shoe.save
       redirect_to shoes_path, notice: "Shoe Created"
     else
       render "new"
+    end
+  end
+
+  def edit; end
+
+  def update
+    if @shoe.update(shoe_params)
+      redirect_to shoes_path, notice: "Shoe Updated"
+    else
+      render "edit"
     end
   end
 
@@ -26,7 +34,7 @@ class ShoesController < ApplicationController
 
   private
 
-  def shoes_params
+  def shoe_params
     params
       .require(:shoe)
       .permit(:name, :retired, :allowed_distance_in_miles)
