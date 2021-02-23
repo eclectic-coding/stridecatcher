@@ -30,4 +30,12 @@ class UserTest < ActiveSupport::TestCase
     end
   end
 
+  test "should delete associated shoes" do
+    @user_with_shoes = users(:confirmed_user_with_shoes)
+    count = @user_with_shoes.shoes.count
+    assert_difference("Shoe.count", -count) do
+      @user_with_shoes.destroy
+    end
+  end
+
 end

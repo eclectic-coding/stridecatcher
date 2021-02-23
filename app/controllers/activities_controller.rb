@@ -48,7 +48,7 @@ class ActivitiesController < ApplicationController
   def activity_params
     params
       .require(:activity)
-      .permit(:category, :distance, :difficulty, :unit, :date, :description, :hours, :minutes, :seconds)
+      .permit(:category, :distance, :difficulty, :unit, :date, :description, :hours, :minutes, :seconds, :shoe_id)
   end
 
   def set_activity
