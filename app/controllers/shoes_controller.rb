@@ -3,7 +3,7 @@ class ShoesController < ApplicationController
   before_action :set_shoe, only: %i[edit update destroy]
 
   def index
-    @pagy, @shoes = pagy(current_user.shoes.ordered)
+    @pagy, @shoes = pagy(current_user.shoes.ordered.alphabetized)
   end
 
   def new
