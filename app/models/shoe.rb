@@ -8,6 +8,8 @@ class Shoe < ApplicationRecord
 
   after_save :notify_user, if: :user_should_be_notified?
 
+  scope :ordered, -> { order(retired: :asc).order(name: :asc) }
+
   private
 
   def notify_user
@@ -15,7 +17,7 @@ class Shoe < ApplicationRecord
     NotifyUserMailer.shoe_mileage_reached(self).deliver_now
     self.notified = true
   end
-  
+
   def user_should_be_notified?
     !self.notified? && self.distance_in_miles >= self.allowed_distance_in_miles
   end

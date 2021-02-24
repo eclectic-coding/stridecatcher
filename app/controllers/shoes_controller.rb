@@ -2,7 +2,9 @@ class ShoesController < ApplicationController
   before_action :authenticate_user!
   before_action :set_shoe, only: %i[edit update destroy]
 
-  def index; end
+  def index
+    @pagy, @shoes = pagy(current_user.shoes.ordered)
+  end
 
   def new
     @shoe = current_user.shoes.build
